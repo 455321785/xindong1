@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心动私人影院 | 助教陪玩体验馆</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0f0f1a;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(120, 50, 180, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(200, 80, 230, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 100, 200, 0.05) 0%, transparent 30%);
+        }
+        
+        /* 首页样式 */
+        .home-screen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0a0a14 0%, #151528 50%, #1c1c38 100%);
+            position: relative;
+            overflow: hidden;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+        
+        .home-screen.active {
+            opacity: 1;
+        }
+        
+        .home-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* 标题样式 */
+        .title-container {
+            text-align: center;
+            z-index: 1;
+            max-width: 900px;
+            padding: 0 30px;
+            margin-top: -80px;
+        }
+        
+        .main-title {
+            font-size: 4.5rem; /* 减小字号确保一行显示 */
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                #ff6b9d 0%,      /* 粉色 */
+                #ff8fab 20%,     /* 亮粉色 */
+                #c77dff 40%,     /* 紫色 */
+                #8a5cea 60%,     /* 深紫色 */
+                #4cc9f0 80%,     /* 蓝色 */
+                #00ffcc 100%     /* 青色 */
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 1px; /* 减小字间距 */
+            text-shadow: 
+                0 5px 15px rgba(199, 125, 255, 0.4),
+                0 0 30px rgba(153, 51, 204, 0.3);
+            position: relative;
+            padding-bottom: 20px;
+            white-space: nowrap; /* 防止换行 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #ff6b9d, 
+                #c77dff, 
+                #00ffcc, 
+                transparent
+            );
+            border-radius: 3px;
+            box-shadow: 0 0 15px rgba(255, 102, 204, 0.5);
+        }
+        
+        /* 副标题 - 紫蓝色 */
+        .subtitle {
+            font-size: 2.2rem; /* 减小副标题字号 */
+            color: #fff;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            font-weight: 800;
+            background: linear-gradient(135deg, 
+                #b19cd9 0%,      /* 浅紫色 */
+                #7b68ee 40%,     /* 中紫色 */
+                #6a5acd 60%,     /* 石板蓝 */
+                #4169e1 80%,     /* 皇室蓝 */
+                #483d8b 100%     /* 深石板蓝 */
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 
+                0 5px 15px rgba(123, 104, 238, 0.4),
+                0 0 25px rgba(153, 51, 204, 0.3);
+            padding: 12px 0;
+            position: relative;
+            animation: subtitle-glow 3s ease-in-out infinite alternate;
+            white-space: nowrap; /* 防止换行 */
+        }
+        
+        @keyframes subtitle-glow {
+            0% {
+                text-shadow: 
+                    0 5px 15px rgba(123, 104, 238, 0.4),
+                    0 0 25px rgba(153, 51, 204, 0.3);
+            }
+            100% {
+                text-shadow: 
+                    0 5px 20px rgba(123, 104, 238, 0.7),
+                    0 0 35px rgba(204, 51, 255, 0.5),
+                    0 0 50px rgba(153, 51, 204, 0.3);
+            }
+        }
+        
+        .description {
+            font-size: 1.3rem; /* 减小描述文字字号 */
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 50px; /* 减小底部间距 */
+            letter-spacing: 1px;
+            max-width: 700px; /* 减小最大宽度 */
+            line-height: 1.7;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 25px; /* 减小内边距 */
+            border-radius: 18px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 按钮容器 */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* 减小按钮间距 */
+            align-items: center;
+            z-index: 1;
+            margin-top: 25px; /* 减小顶部间距 */
+        }
+        
+        /* 按钮通用样式 */
+        .home-btn {
+            color: white;
+            border: none;
+            padding: 20px 50px; /* 减小按钮内边距 */
+            font-size: 1.3rem; /* 减小按钮文字 */
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            position: relative;
+            overflow: hidden;
+            width: 320px; /* 减小按钮宽度 */
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .play-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c77dff 100%);
+        }
+        
+        .coach-btn {
+            background: linear-gradient(135deg, #7b68ee 0%, #4169e1 100%);
+        }
+        
+        .home-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .play-btn:hover {
+            box-shadow: 0 25px 50px rgba(199, 125, 255, 0.6);
+        }
+        
+        .coach-btn:hover {
+            box-shadow: 0 25px 50px rgba(123, 104, 238, 0.6);
+        }
+        
+        .home-btn:active {
+            transform: translateY(-5px);
+        }
+        
+        .home-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+        }
+        
+        .home-btn:hover::after {
+            animation: shine 1.8s ease infinite;
+        }
+        
+        @keyframes shine {
+            100% { transform: translateX(100%); }
+        }
+        
+        /* 玩法介绍页面样式 */
+        .info-screen {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #0c0c14 0%, #151528 50%, #1c1c38 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            z-index: 2;
+        }
+        
+        .info-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 助教列表页面样式 */
+        .coach-list-screen {
+            width: 100vw;
+            height: 100vh;
+            background: #0f0f1a;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .coach-list-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 助教详情页面样式 */
+        .coach-detail-screen {
+            width: 100vw;
+            height: 100vh;
+            background: #0a0a14;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            z-index: 4;
+        }
+        
+        .coach-detail-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 返回按钮样式 */
+        .back-btn {
+            position: fixed;
+            top: 35px;
+            left: 35px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.6rem;
+            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.15) rotate(-10deg);
+            box-shadow: 0 12px 35px rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* 玩法介绍内容样式 */
+        .info-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 20px 40px;
+        }
+        
+        .info-title {
+            font-size: 2.8rem; /* 减小标题字号确保一行显示 */
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff8fab, #c77dff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 5px 15px rgba(255, 102, 204, 0.4);
+            white-space: nowrap; /* 防止换行 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 20px;
+        }
+        
+        .info-text {
+            font-size: 1.2rem; /* 减小正文字号 */
+            line-height: 1.8;
+            color: #d1d1e9;
+            text-align: justify;
+            margin-bottom: 20px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 4px solid #7b68ee;
+        }
+        
+        .info-text strong {
+            color: #ff8fab;
+            font-weight: 700;
+        }
+        
+        .package {
+            margin: 25px 0;
+            padding: 22px;
+            background: rgba(123, 104, 238, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(123, 104, 238, 0.3);
+        }
+        
+        .package-title {
+            font-size: 1.6rem;
+            color: #ff66cc;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .package-desc {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #d1d1e9;
+        }
+        
+        .notice {
+            padding: 18px;
+            background: rgba(255, 100, 100, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            margin: 18px 0;
+            color: #ff9999;
+            font-size: 1.1rem;
+        }
+        
+        /* 助教列表页面头部 */
+        .coach-list-header {
+            padding: 35px 25px 20px;
+            background: rgba(15, 15, 26, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            z-index: 10;
+            position: relative;
+        }
+        
+        .coach-list-title {
+            font-size: 3rem; /* 减小标题字号 */
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                #b19cd9 0%,      /* 浅紫色 */
+                #7b68ee 40%,     /* 中紫色 */
+                #6a5acd 60%,     /* 石板蓝 */
+                #4169e1 80%,     /* 皇室蓝 */
+                #483d8b 100%     /* 深石板蓝 */
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            text-align: center;
+            text-shadow: 0 8px 25px rgba(123, 104, 238, 0.3);
+        }
+        
+        .coach-list-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* 助教列表容器 */
+        .coach-list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+        
+        /* 助教列表项 - 带圆圈的名字（库洛米风格） */
+        .coach-list-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coach-list-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateX(8px);
+        }
+        
+        /* 库洛米风格圆圈头像 */
+        .coach-name-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            margin-right: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(123, 104, 238, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            background: linear-gradient(135deg, #ff6b9d, #c77dff, #7b68ee);
+            position: relative;
+        }
+        
+        /* 库洛米风格头像图片 */
+        .coach-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .coach-info-list {
+            flex: 1;
+        }
+        
+        .coach-name-text {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        
+        .coach-basic-info {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            gap: 25px;
+            margin-top: 5px;
+        }
+        
+        .coach-stat-item {
+            display: inline-block;
+            padding: 2px 0;
+        }
+        
+        .list-arrow {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+        
+        .coach-list-item:hover .list-arrow {
+            color: #7b68ee;
+            transform: translateX(5px);
+        }
+        
+        /* 助教详情页面样式 */
+        .coach-detail-container {
+            max-width: 1100px;
+            margin: 90px auto 50px;
+            background: rgba(15, 15, 26, 0.7);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+        
+        /* 详情页头部 - 左对齐设计 */
+        .coach-detail-header {
+            padding: 40px 40px 25px;
+            background: linear-gradient(135deg, rgba(123, 104, 238, 0.15), rgba(106, 90, 205, 0.15));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coach-detail-info {
+            text-align: left; /* 左对齐 */
+        }
+        
+        .coach-detail-name {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+            line-height: 1.1;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            text-align: left; /* 左对齐 */
+        }
+        
+        /* 基础信息栏 - 左对齐 */
+        .coach-basic-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left; /* 左对齐 */
+        }
+        
+        .basic-stat-item {
+            text-align: left; /* 左对齐 */
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        /* 详情内容区域 */
+        .coach-detail-content {
+            padding: 35px 40px 40px;
+            text-align: left; /* 整体左对齐 */
+        }
+        
+        /* 介绍栏 */
+        .intro-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: rgba(40, 15, 70, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 102, 204, 0.2);
+            text-align: left; /* 左对齐 */
+        }
+        
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #ff66cc;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255, 102, 204, 0.3);
+            text-align: left; /* 左对齐 */
+        }
+        
+        .intro-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: rgba(255, 230, 255, 0.9);
+            text-align: left; /* 左对齐 */
+        }
+        
+        /* 照片展示区域 - 点击放大功能 */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .photo-item {
+            border-radius: 12px;
+            overflow: hidden;
+            height: 280px;
+            background: linear-gradient(135deg, #2d1b69, #1a0b2e);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .photo-item:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(123, 104, 238, 0.3);
+        }
+        
+        /* 图片放大模态框 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .coach-basic-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.8rem;
+            }
+            
+            .description {
+                font-size: 1.1rem;
+                padding: 18px;
+                margin-bottom: 40px;
+            }
+            
+            .info-title {
+                font-size: 2.2rem;
+            }
+            
+            .home-btn {
+                width: 300px;
+                padding: 18px 45px;
+                font-size: 1.2rem;
+            }
+            
+            .coach-list-title, .coach-detail-name {
+                font-size: 2.5rem;
+            }
+            
+            .coach-list-item {
+                padding: 15px 20px;
+            }
+            
+            .coach-name-circle {
+                width: 55px;
+                height: 55px;
+                font-size: 1.4rem;
+                margin-right: 15px;
+            }
+            
+            .coach-basic-info {
+                gap: 15px;
+                font-size: 0.95rem;
+            }
+            
+            .coach-detail-content {
+                padding: 25px;
+            }
+            
+            .photo-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+            }
+            
+            .photo-item {
+                height: 220px;
+            }
+            
+            .back-btn {
+                top: 25px;
+                left: 25px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .home-btn {
+                width: 280px;
+                padding: 16px 40px;
+            }
+            
+            .coach-detail-name {
+                font-size: 2.2rem;
+            }
+            
+            .coach-basic-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .photo-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        .coach-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .coach-list-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .coach-list-container::-webkit-scrollbar-thumb {
+            background: rgba(123, 104, 238, 0.3);
+            border-radius: 4px;
+        }
+        
+        .coach-list-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(123, 104, 238, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- 首页 -->
+    <div class="home-screen active" id="homeScreen">
+        <div class="stars" id="stars"></div>
+        
+        <div class="title-container">
+            <h1 class="main-title">心动私人影院</h1>
+            <p class="subtitle">助教陪玩体验馆</p>
+            <p class="description">沉浸式观影体验，专属于你的电影时光。专业助教陪伴，打造难忘娱乐体验。</p>
+            
+            <div class="button-container">
+                <button class="home-btn play-btn" id="playBtn">
+                    <i class="fas fa-play-circle"></i> 玩法介绍
+                </button>
+                <button class="home-btn coach-btn" id="coachBtn">
+                    <i class="fas fa-user-friends"></i> 助教资料
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 玩法介绍页面 -->
+    <div class="info-screen" id="infoScreen">
+        <button class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        
+        <div class="info-content">
+            <h2 class="info-title">💗COSPLAY日系女高私影小屋💗</h2>
+            
+            <p class="info-text"><strong>真人真照拒绝照骗</strong> 私影·互动·助教·换装·伴游。（营业时间：午13：00--晨02：00）</p>
+            
+            <p class="info-text"><strong>💞本店主打00后学妹 年轻漂亮 jk助教 情感陪伴 体验初恋 甜蜜热恋的感觉💞</strong></p>
+            
+            <p class="info-text">在店美少女身材好 涵养高 颜值爆表 乖巧听话 积极配合。<br>
+            😍御姐 萝莉 清纯 性感类型都有⌯>ᴗo⌯ .ᐟ.ᐟ根据自己喜好 挑选心意💝小姐姐 更换衣服款式😚（到店请提前预约）</p>
+            
+            <p class="info-text"><strong>⬆️所有小姐姐均可到店海选🤗🤗🤗</strong></p>
+            
+            <div class="notice">
+                <strong>⚠️本店无其他隐形费用⚠️</strong><br>
+                <strong>⚠️注意：本店无92 95 98等涉黄服务⚠️</strong>
+            </div>
+            
+            <p class="info-text"><strong>＜充值会员享福利>＜到店了解有惊喜></strong></p>
+            
+            <p class="info-text"><strong>🎮桌游🎬电影➕🥂零食饮料无限畅饮😋</strong></p>
+            
+            <div class="package">
+                <div class="package-title">💕398💟S级女仆套餐[60分钟]</div>
+                <div class="package-desc">一对一影院MM陪伴 跟着小姐姐深度接触 零距离感受小姐姐滑嫩肌肤。 ˃̶͈ ꇴ ˂̶͈ <br>
+                搂着身软怀香小姐姐一起观影 膝枕~躺小姐姐腿上 适当时候可以给您揉揉肩按头部放松放松 🉑亲脸 🉑摸🦵</div>
+            </div>
+            
+            <div class="package">
+                <div class="package-title">💕598💟SS级女仆套餐[60分钟]</div>
+                <div class="package-desc">在S级套餐基础上 增加🉑亲👄🉑摸🐻 🉑骑乘式搂搂抱抱 且妹妹会主动抱着你亲 骑乘式坐在你身上‖进入热恋中.童话般世界『还可以根据你的要求 更换制服 白丝 网丝 黑丝☺️ 且能手撕丝袜 妹妹会主动配合 丝袜🉑带走 带走妹妹的芬香😘』</div>
+            </div>
+            
+            <div class="package">
+                <div class="package-title">💕799💟梦幻SSS级女仆套餐[60分钟]</div>
+                <div class="package-desc">在SS级基础上 增加🉑摸🐻亲🐻🉑👅吻🉑拍打🍑臀<br>
+                ②小时🉑赠送真🈳 🉑到店咨询 🈶什么要求都可以和妹妹聊聊 在合理的情况下 妹妹会尽量满足你的意愿 让你快乐加倍~原有不一样的全新体验~</div>
+            </div>
+            
+            <div class="package">
+                <div class="package-title">💕【热恋女神】998💟SSR级助教</div>
+                <div class="package-desc">服务项目再升级 除了以上服务外 还提供真🈳服务 🉑搁👙👙👙探索小🌺园 小姐姐服务更加火辣热情🥵也🉑轻微SM🉑抚摸 拍打🍑臀 真🈳视觉效果达到满分！！快乐超级加倍~效果拉满~</div>
+            </div>
+            
+            <div class="package">
+                <div class="package-title">【甜蜜约会】1598💟甜妹同城陪玩套餐[2小时]包含798套餐所有项目</div>
+                <div class="package-desc">『外派需提前预留定金』<br>
+                风月情浓 琴瑟在御。<br>
+                与她携手出游 专属二人世界 打卡宝藏小店共尝美食 海边散步等 共同解锁城市地标 一起玩转精彩世界。🉑密室 🉑抓娃娃 🉑吃饭 🉑酒吧 🉑剧本杀 🉑KTV 🉑手牵手逛街 🉑商业接待 🉑跨城约会……</div>
+            </div>
+            
+            <div class="notice">
+                <strong>☝☝【以上项目确认助教后 超过十分钟不予退款】</strong><br>
+                🙏本店承诺没有任何附加费用及隐形费用🙏<br>
+                ⚠️助教小姐姐真真实实00后小学妹 🈚️任何疑问⚠️<br>
+                本店不涉黄 不提供任何违法服务⚠️请自重！！<br>
+                〔环境安静 舒适 高档 安全保障 独立包间💞给你提供最温馨浪漫的服务~😝〕
+            </div>
+        </div>
+    </div>
+    
+    <!-- 助教列表页面 -->
+    <div class="coach-list-screen" id="coachListScreen">
+        <button class="back-btn" id="coachListBackBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        
+        <div class="coach-list-header">
+            <h2 class="coach-list-title">助教陪玩体验馆</h2>
+            <p class="coach-list-subtitle">我们拥有专业的陪玩助教团队，为您提供优质的陪伴服务，让您的娱乐体验更加难忘。</p>
+        </div>
+        
+        <div class="coach-list-container" id="coachListContainer">
+            <!-- 助教列表项将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 助教详情页面 -->
+    <div class="coach-detail-screen" id="coachDetailScreen">
+        <button class="back-btn" id="coachDetailBackBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        
+        <div class="coach-detail-container" id="coachDetailContainer">
+            <!-- 助教详情将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 图片放大模态框 -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img class="modal-image" id="modalImage" src="" alt="放大图片">
+        </div>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const homeScreen = document.getElementById('homeScreen');
+        const infoScreen = document.getElementById('infoScreen');
+        const coachListScreen = document.getElementById('coachListScreen');
+        const coachDetailScreen = document.getElementById('coachDetailScreen');
+        const playBtn = document.getElementById('playBtn');
+        const coachBtn = document.getElementById('coachBtn');
+        const backBtn = document.getElementById('backBtn');
+        const coachListBackBtn = document.getElementById('coachListBackBtn');
+        const coachDetailBackBtn = document.getElementById('coachDetailBackBtn');
+        const coachListContainer = document.getElementById('coachListContainer');
+        const coachDetailContainer = document.getElementById('coachDetailContainer');
+        const starsContainer = document.getElementById('stars');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.getElementById('closeModal');
+        
+        // 库洛米头像图片URL
+        const kuromiAvatarUrl = "https://images.unsplash.com/photo-1578632749014-ca77efd052eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80";
+        
+        // 助教数据
+        const coaches = [
+            {
+                id: 1,
+                name: "小玖",
+                age: "20岁",
+                height: "165cm",
+                weight: "50kg",
+                size: "B",
+                intro: "甜美可爱的00后学妹，性格活泼开朗，喜欢撒娇卖萌。声音甜美好听，善于营造浪漫氛围，能让客人感受到初恋般的甜蜜。",
+                photos: [
+                    "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                ]
+            },
+            {
+                id: 2,
+                name: "可可",
+                age: "19岁",
+                height: "165cm",
+                weight: "51kg",
+                size: "C",
+                intro: "温柔体贴的邻家女孩，性格温和善解人意。擅长倾听和陪伴，能给人温暖的感觉，让客人感到放松舒适。",
+                photos: [
+                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                ]
+            },
+            {
+                id: 3,
+                name: "小琪",
+                age: "18岁",
+                height: "178cm",
+                weight: "55kg",
+                size: "B",
+                intro: "气质高挑的御姐型助教，性格大方得体。拥有模特般的身材和气质，擅长营造高级感氛围，服务专业周到。",
+                photos: [
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                ]
+            },
+            {
+                id: 4,
+                name: "婷婷",
+                age: "19岁",
+                height: "162cm",
+                weight: "51kg",
+                size: "B",
+                intro: "活泼可爱的元气少女，性格开朗爱笑。擅长活跃气氛，能让整个空间充满欢乐，给客人带来愉快的体验。",
+                photos: [
+                    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                ]
+            },
+            {
+                id: 5,
+                name: "甜甜",
+                age: "20岁",
+                height: "165cm",
+                weight: "46kg",
+                size: "B",
+                intro: "温柔甜美的治愈系女孩，性格细腻体贴。擅长照顾人，能给客人带来被呵护的感觉，体验温馨浪漫的时光。",
+                photos: [
+                    "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                ]
+            },
+            {
+                id: 6,
+                name: "糖糖",
+                age: "18岁",
+                height: "165cm",
+                weight: "50kg",
+                size: "B",
+                intro: "古灵精怪的可爱女生，性格调皮有趣。擅长制造惊喜和趣味互动，能让客人体验不一样的欢乐时光。",
+                photos: [
+                    "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                ]
+            }
+        ];
+        
+        // 当前选中的助教ID
+        let currentCoachId = null;
+        
+        // 创建星空背景
+        function createStars() {
+            const starsCount = 150;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机大小和位置
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${posX}%`;
+                star.style.top = `${posY}%`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 生成助教列表项 - 带库洛米头像
+        function generateCoachList() {
+            coachListContainer.innerHTML = '';
+            
+            coaches.forEach(coach => {
+                const listItem = document.createElement('div');
+                listItem.className = 'coach-list-item';
+                listItem.dataset.id = coach.id;
+                
+                listItem.innerHTML = `
+                    <div class="coach-name-circle">
+                        <img src="${kuromiAvatarUrl}" alt="${coach.name}" class="coach-avatar-img">
+                    </div>
+                    <div class="coach-info-list">
+                        <h3 class="coach-name-text">${coach.name}</h3>
+                        <div class="coach-basic-info">
+                            <span class="coach-stat-item">年龄：${coach.age}</span>
+                            <span class="coach-stat-item">身高：${coach.height}</span>
+                            <span class="coach-stat-item">体重：${coach.weight}</span>
+                            <span class="coach-stat-item">Size：${coach.size}</span>
+                        </div>
+                    </div>
+                    <div class="list-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                `;
+                
+                // 点击列表项进入详情页
+                listItem.addEventListener('click', function() {
+                    currentCoachId = coach.id;
+                    showCoachDetail(coach.id);
+                });
+                
+                coachListContainer.appendChild(listItem);
+            });
+        }
+        
+        // 显示助教详情
+        function showCoachDetail(coachId) {
+            const coach = coaches.find(c => c.id === coachId);
+            if (!coach) return;
+            
+            // 生成照片HTML
+            const photosHTML = coach.photos.map((photo, index) => 
+                `<div class="photo-item" data-index="${index}" style="background-image: url('${photo}'); background-color: ${index % 2 === 0 ? '#2d1b69' : '#1a0b2e'}">点击查看</div>`
+            ).join('');
+            
+            coachDetailContainer.innerHTML = `
+                <div class="coach-detail-header">
+                    <div class="coach-detail-info">
+                        <h2 class="coach-detail-name">${coach.name}</h2>
+                        <div class="coach-basic-stats">
+                            <div class="basic-stat-item">
+                                <div class="stat-label">年龄</div>
+                                <div class="stat-value">${coach.age}</div>
+                            </div>
+                            <div class="basic-stat-item">
+                                <div class="stat-label">身高</div>
+                                <div class="stat-value">${coach.height}</div>
+                            </div>
+                            <div class="basic-stat-item">
+                                <div class="stat-label">体重</div>
+                                <div class="stat-value">${coach.weight}</div>
+                            </div>
+                            <div class="basic-stat-item">
+                                <div class="stat-label">Size</div>
+                                <div class="stat-value">${coach.size}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="coach-detail-content">
+                    <div class="intro-section">
+                        <h3 class="section-title">介绍</h3>
+                        <p class="intro-text">${coach.intro}</p>
+                    </div>
+                    
+                    <div class="intro-section">
+                        <h3 class="section-title">个人照片</h3>
+                        <div class="photo-gallery">
+                            ${photosHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 为照片添加点击放大功能
+            const photoItems = coachDetailContainer.querySelectorAll('.photo-item');
+            photoItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const photoUrl = coach.photos[index];
+                    openImageModal(photoUrl);
+                });
+            });
+            
+            // 切换到详情页
+            coachListScreen.classList.remove('active');
+            setTimeout(() => {
+                coachDetailScreen.classList.add('active');
+            }, 300);
+        }
+        
+        // 打开图片放大模态框
+        function openImageModal(imageUrl) {
+            modalImage.src = imageUrl;
+            imageModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 关闭图片放大模态框
+        function closeImageModal() {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // 初始化
+        function init() {
+            createStars();
+            generateCoachList();
+            
+            // 绑定模态框关闭事件
+            closeModal.addEventListener('click', closeImageModal);
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+            
+            // 按ESC键关闭模态框
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                    closeImageModal();
+                }
+            });
+        }
+        
+        // 切换到玩法介绍页面
+        playBtn.addEventListener('click', () => {
+            homeScreen.classList.remove('active');
+            homeScreen.classList.add('hidden');
+            
+            setTimeout(() => {
+                infoScreen.classList.add('active');
+            }, 300);
+        });
+        
+        // 切换到助教列表页面
+        coachBtn.addEventListener('click', () => {
+            homeScreen.classList.remove('active');
+            homeScreen.classList.add('hidden');
+            
+            setTimeout(() => {
+                coachListScreen.classList.add('active');
+            }, 300);
+        });
+        
+        // 返回首页（从玩法介绍页面）
+        backBtn.addEventListener('click', () => {
+            infoScreen.classList.remove('active');
+            
+            setTimeout(() => {
+                homeScreen.classList.remove('hidden');
+                homeScreen.classList.add('active');
+            }, 300);
+        });
+        
+        // 返回首页（从助教列表页面）
+        coachListBackBtn.addEventListener('click', () => {
+            coachListScreen.classList.remove('active');
+            
+            setTimeout(() => {
+                homeScreen.classList.remove('hidden');
+                homeScreen.classList.add('active');
+            }, 300);
+        });
+        
+        // 返回助教列表页面（从助教详情页面）
+        coachDetailBackBtn.addEventListener('click', () => {
+            coachDetailScreen.classList.remove('active');
+            
+            setTimeout(() => {
+                coachListScreen.classList.add('active');
+            }, 300);
+        });
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
